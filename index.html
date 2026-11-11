@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="kk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f7f2" />
+    <meta name="description" content="ҰБТ-ға бес пәннен дайындық: тақырып картасы, бейнесабақтар, сынақтар және оқу барысын бақылау." />
+    <title>Qadam — ҰБТ-ға дайындық</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#home" data-view="home" aria-label="Qadam басты бет">
+          <span class="brand-mark">q</span>
+          <span class="brand-copy"><strong>qadam</strong><small>ҰБТ-ға дайындық</small></span>
+        </a>
+
+        <div class="side-label">ОҚУ</div>
+        <nav class="primary-nav" aria-label="Негізгі навигация">
+          <button class="nav-link active" data-view="home"><span class="nav-icon">⌂</span><span>Басты бет</span></button>
+          <button class="nav-link" data-view="subjects"><span class="nav-icon">▤</span><span>Пәндер</span><span class="nav-count">5</span></button>
+          <button class="nav-link" data-view="videos"><span class="nav-icon">▷</span><span>Видео сабақтар</span></button>
+          <button class="nav-link" data-view="plan"><span class="nav-icon">▦</span><span>Оқу жоспары</span></button>
+          <button class="nav-link" data-view="quiz"><span class="nav-icon">✓</span><span>Байқау тесттері</span></button>
+          <button class="nav-link" data-view="progress"><span class="nav-icon">◔</span><span>Менің прогресім</span></button>
+          <button class="nav-link" data-view="review"><span class="nav-icon">◷</span><span>Қайталау карталары</span></button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-note">
+          <div class="note-spark">✳</div>
+          <p>Күн сайынғы аз қадам — үлкен нәтижеге бастайды.</p>
+          <span>Бүгінгі қарқын: өзіңе ыңғайлы</span>
+        </div>
+        <div class="sidebar-bottom">
+          <span class="avatar avatar-small">О</span>
+          <div class="profile-copy"><strong>Оқушы</strong><span>Жеке оқу кеңістігі</span></div>
+          <span class="more-dots">···</span>
+        </div>
+      </aside>
+
+      <div class="main-column">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobile-menu" aria-label="Мәзірді ашу">☰</button>
+          <div class="crumb"><span>Оқу кеңістігі</span><span class="crumb-divider">/</span><strong id="crumb-current">Басты бет</strong></div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="help-button" aria-label="ҰБТ форматы туралы" title="ҰБТ форматы">i</button>
+            <span class="avatar">О</span>
+          </div>
+        </header>
+
+        <main id="app-content" tabindex="-1"></main>
+        <footer class="site-footer"><span>Qadam · бес пән · оқу барысы осы құрылғыда сақталады</span><button class="text-button" id="sources-button">Дереккөздер</button></footer>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay" hidden></div>
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <button class="modal-close" id="modal-close" aria-label="Жабу">×</button>
+      <div id="modal-body"></div>
+    </section>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
