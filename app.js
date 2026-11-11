@@ -253,6 +253,8 @@ const main = document.getElementById('app-content');
 const modal = document.getElementById('modal');
 const modalBody = document.getElementById('modal-body');
 const overlay = document.getElementById('overlay');
+const sidebar = document.getElementById('sidebar');
+const mobileMenuButton = document.getElementById('mobile-menu');
 const toastNode = document.getElementById('toast');
 const viewNames = { home: 'Басты бет', subjects: 'Пәндер', videos: 'Видео сабақтар', plan: 'Оқу жоспары', quiz: 'Байқау тесттері', progress: 'Менің прогресім', review: 'Қайталау карталары' };
 
@@ -299,7 +301,7 @@ function setView(next) {
   if (view !== 'subjects') selectedTopicId = null;
   document.querySelectorAll('[data-view]').forEach((button) => button.classList.toggle('active', button.dataset.view === view));
   document.getElementById('crumb-current').textContent = viewNames[view] || 'Оқу кеңістігі';
-  document.getElementById('sidebar').classList.remove('open');
+  closeDrawer();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -536,8 +538,25 @@ function showSourcesModal() {
   modalBody.innerHTML = `<h2 class="modal-title" id="modal-title">Ресми дереккөздер</h2><p class="modal-lead">Сайттағы пән тақырыптары мен формат туралы мәліметтер Ұлттық тестілеу орталығының қазақша материалдарына сүйенеді.</p><div class="source-links"><a href="${SPEC_URLS.history}" target="_blank" rel="noreferrer">Қазақстан тарихы · ҰБТ спецификациясы <small>2026 жылдан бастап ↗</small></a><a href="${SPEC_URLS.reading}" target="_blank" rel="noreferrer">Оқу сауаттылығы · ҰБТ спецификациясы <small>2026 жылдан бастап ↗</small></a><a href="${SPEC_URLS.mathlit}" target="_blank" rel="noreferrer">Математикалық сауаттылық · ҰБТ спецификациясы <small>2026 жылдан бастап ↗</small></a><a href="${SPEC_URLS.biology}" target="_blank" rel="noreferrer">Биология · ҰБТ спецификациясы <small>2026 жылдан бастап ↗</small></a><a href="${SPEC_URLS.chemistry}" target="_blank" rel="noreferrer">Химия · ҰБТ спецификациясы <small>2026 жылдан бастап ↗</small></a><a href="${SPEC_URLS.format}" target="_blank" rel="noreferrer">ҰБТ форматы <small>Ұлттық тестілеу орталығы ↗</small></a><a href="${SPEC_URLS.prep}" target="_blank" rel="noreferrer">Дайындық материалдары <small>ҰТО үлгі тесттері ↗</small></a><a href="${SPEC_URLS.freeTest}" target="_blank" rel="noreferrer">Тегін байқау тесті <small>ҰТО платформасы ↗</small></a></div><p class="source-note" style="margin-top:15px">Тақырып астындағы қысқаша оқу бағыттары — дайындыққа арналған түсіндірме. Толық мазмұн мен ең соңғы өзгерістер үшін ресми спецификацияны басшылыққа ал.</p>`;
   openModal();
 }
-function openModal() { modal.hidden = false; overlay.hidden = false; document.getElementById('modal-close').focus(); }
-function closeModal() { modal.hidden = true; overlay.hidden = true; }
+function openModal() { closeDrawer(); modal.hidden = false; overlay.classList.remove('drawer-open'); overlay.hidden = false; document.getElementById('modal-close').focus(); }
+function closeModal() { modal.hidden = true; if (!sidebar.classList.contains('open')) overlay.hidden = true; }
+
+function openDrawer() {
+  closeModal();
+  sidebar.classList.add('open');
+  overlay.classList.add('drawer-open');
+  overlay.hidden = false;
+  document.body.classList.add('drawer-active');
+  mobileMenuButton.setAttribute('aria-expanded', 'true');
+}
+function closeDrawer({ restoreFocus = false } = {}) {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('drawer-open');
+  document.body.classList.remove('drawer-active');
+  mobileMenuButton.setAttribute('aria-expanded', 'false');
+  if (modal.hidden) overlay.hidden = true;
+  if (restoreFocus && window.matchMedia('(max-width: 820px)').matches) mobileMenuButton.focus();
+}
 
 function currentQuizSelection() { return [...document.querySelectorAll('#answer-list input:checked')].map((input) => Number(input.value)); }
 function updateQuizSelection() {
@@ -640,13 +659,19 @@ document.addEventListener('input', (event) => {
   }
 });
 
-document.getElementById('mobile-menu').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.toggle('open'); overlay.hidden = !document.getElementById('sidebar').classList.contains('open');
-});
+mobileMenuButton.addEventListener('click', () => sidebar.classList.contains('open') ? closeDrawer() : openDrawer());
+document.getElementById('sidebar-close').addEventListener('click', () => closeDrawer({ restoreFocus: true }));
 document.getElementById('help-button').addEventListener('click', showFormatModal);
 document.getElementById('sources-button').addEventListener('click', showSourcesModal);
 document.getElementById('modal-close').addEventListener('click', closeModal);
-overlay.addEventListener('click', () => { closeModal(); document.getElementById('sidebar').classList.remove('open'); });
-document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeModal(); document.getElementById('sidebar').classList.remove('open'); overlay.hidden = true; } });
+overlay.addEventListener('click', () => {
+  if (!modal.hidden) closeModal();
+  if (sidebar.classList.contains('open')) closeDrawer({ restoreFocus: true });
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  if (!modal.hidden) closeModal();
+  if (sidebar.classList.contains('open')) closeDrawer({ restoreFocus: true });
+});
 
 render();

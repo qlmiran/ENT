@@ -11,11 +11,12 @@
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar" id="sidebar">
+      <aside class="sidebar" id="sidebar" aria-label="Негізгі мәзір">
         <a class="brand" href="#home" data-view="home" aria-label="Qadam басты бет">
           <span class="brand-mark">q</span>
           <span class="brand-copy"><strong>qadam</strong><small>ҰБТ-ға дайындық</small></span>
         </a>
+        <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Мәзірді жабу">×</button>
 
         <div class="side-label">ОҚУ</div>
         <nav class="primary-nav" aria-label="Негізгі навигация">
@@ -30,9 +31,9 @@
 
         <div class="sidebar-spacer"></div>
         <div class="sidebar-note">
-          <div class="note-spark">✳</div>
-          <p>Күн сайынғы аз қадам — үлкен нәтижеге бастайды.</p>
-          <span>Бүгінгі қарқын: өзіңе ыңғайлы</span>
+          <div class="sidebar-note-top"><span class="note-spark">✳</span><span>ӨЗ ҚАРҚЫНЫҢМЕН</span></div>
+          <p>Бүгінгі 10 минут та — алға жасалған қадам.</p>
+          <button class="note-action" type="button" data-view="plan">Жоспарды ашу <span aria-hidden="true">→</span></button>
         </div>
         <div class="sidebar-bottom">
           <span class="avatar avatar-small">О</span>
@@ -43,7 +44,7 @@
 
       <div class="main-column">
         <header class="topbar">
-          <button class="mobile-menu" id="mobile-menu" aria-label="Мәзірді ашу">☰</button>
+          <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Мәзірді ашу" aria-controls="sidebar" aria-expanded="false">☰</button>
           <div class="crumb"><span>Оқу кеңістігі</span><span class="crumb-divider">/</span><strong id="crumb-current">Басты бет</strong></div>
           <div class="topbar-actions">
             <button class="icon-button" id="help-button" aria-label="ҰБТ форматы туралы" title="ҰБТ форматы">i</button>
@@ -56,7 +57,7 @@
       </div>
     </div>
 
-    <div class="overlay" id="overlay" hidden></div>
+    <div class="overlay" id="overlay" aria-hidden="true" hidden></div>
     <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
       <button class="modal-close" id="modal-close" aria-label="Жабу">×</button>
       <div id="modal-body"></div>
